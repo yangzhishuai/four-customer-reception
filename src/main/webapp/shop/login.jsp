@@ -29,24 +29,25 @@
             <div class="fl"></div>
             <div class="fr pc-login-box">
                 <div class="pc-login-title"><h2>用户登录</h2></div>
-                <form action="">
+                <form id="stuform" >
                     <div class="pc-sign">
-                        <input type="text" placeholder="用户名/邮箱/手机号">
+                        <input type="text" name="username" placeholder="用户名/邮箱/手机号">
                     </div>
+                    <span id="logintishixxi"></span>
                     <div class="pc-sign">
-                        <input type="password" placeholder="请输入您的密码">
+                        <input type="password" name="password" placeholder="请输入您的密码">
                     </div>
                     <div class="pc-submit-ss">
-                        <input type="submit" value="登录" placeholder="">
+                        <input type="button" id="login-button" value="登录" placeholder="">
                     </div>
                     <div class="pc-item-san clearfix">
-                        <a href="#"><img src="img/icon/weixin.png" alt="">微信登录</a>
+                <%--        <a href="#"><img src="img/icon/weixin.png" alt="">微信登录</a>
                         <a href="#"><img src="img/icon/weibo.png" alt="">微博登录</a>
-                        <a href="#" style="margin-right:0"><img src="img/icon/tengxun.png" alt="">QQ登录</a>
+                        <a href="#" style="margin-right:0"><img src="img/icon/tengxun.png" alt="">QQ登录</a>--%>
                     </div>
                     <div class="pc-reg">
                         <a href="#">忘记密码</a>
-                        <a href="register.html" class="red">免费注册</a>
+                        <a href="/shop/register.jsp" class="red">免费注册</a>
                     </div>
                 </form>
             </div>
@@ -62,6 +63,35 @@
         </div>
     </div>
 </footer>
+<script src="../EasyUI/jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#login-button').click(function () {
+        $.ajax({
+            url:"<%=request.getContextPath()%>/dldshop/login.do",
+            type:"post",
+            data:$("#stuform").serialize(),
+            success:function(msg){
+//				0:用户名不存在 1：密码错误 2：登录成功
+                if(msg == 0){
+                    var st="<font colro='red'>用户名或密码输入错误，请核对后重新输入</font>";
+                    $("#logintishixxi").html(st);
+                }
+                if(msg == 1){
+                    var st="<font colro='red'>用户名或密码输入错误，请核对后重新输入</font>";
+                    $("#logintishixxi").html(st);
+                }
 
+                if(msg==2){
+                    location.href="<%=request.getContextPath()%>/dldshop/logintiao.do"
+                }
+            },
+            error:function(){
+                alert("失败")
+
+            }
+
+        })
+    });
+</script>
 </body>
 </html>

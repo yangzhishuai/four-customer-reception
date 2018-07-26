@@ -30,30 +30,30 @@
             <div class="fl"></div>
             <div class="fr pc-login-box">
                 <div class="pc-login-title"><h2>用户注册</h2></div>
-                <form action="">
+                <form id="zhucefrombyid">
                     <div class="pc-sign">
-                        <input type="text" placeholder="邮箱/手机号">
+                        <input type="text" name="username" placeholder="账号/用户名字">
                     </div>
+                    <span id="zhuceusername"></span>
                     <div class="pc-sign">
-                        <input type="password" placeholder="请输入您的密码">
+                        <input type="password" name="password" placeholder="请输入您的密码">
                     </div>
+                    <span id="zhucepassword"></span>
                     <div class="pc-sign">
-                        <input type="password" placeholder="请确认您的密码">
+                        <input type="password" name="password2" placeholder="请确认您的密码">
                     </div>
-                    <div class="pc-sign">
-                        <input type="password" placeholder="请输入您的验证码">
-                    </div>
+                    <span id="zhucepassword2"></span>
                     <div class="pc-submit-ss">
-                        <input type="submit" value="立即注册" placeholder="">
+                        <input type="button" id="zhuce-button" value="立即注册" placeholder="">
                     </div>
                     <div class="pc-item-san clearfix">
-                        <a href="#"><img src="img/icon/weixin.png" alt="">微信登录</a>
-                        <a href="#"><img src="img/icon/weibo.png" alt="">微博登录</a>
-                        <a href="#" style="margin-right:0"><img src="img/icon/tengxun.png" alt="">QQ登录</a>
+                        <a href="https://passport.weibo.cn/signin/welcome?entry=mweibo&r=http%3A%2F%2Fpad.weibo.cn%2F&_T_WM=1c7bf9cbc49235968ba2fab8a0ee77e8"><img src="img/icon/weixin.png" alt="">微信登录</a>
+                        <a href="https://wx.qq.com/"><img src="img/icon/weibo.png" alt="">微博登录</a>
+                        <a href="http://web2.qq.com/" style="margin-right:0"><img src="img/icon/tengxun.png" alt="">QQ登录</a>
                     </div>
                     <div class="pc-reg">
 
-                        <a href="login.html" class="red">已有账号 请登录</a>
+                        <a href="/shop/login.jsp" class="red">已有账号 请登录</a>
                     </div>
                 </form>
             </div>
@@ -68,6 +68,65 @@
         </div>
     </div>
 </footer>
+<script src="../EasyUI/jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#zhuce-button').click(function () {
+    var username=$("input[name=username]").val();
 
+         if(username!=""&&username!=null){
+             $("#zhuceusername").html("");
+             if(passwordyanz()&&passwordyanz2()){
+                 $.ajax({
+                     url:"<%=request.getContextPath()%>/dldshop/userzhuce.do",
+                     type:"post",
+                     data:$("#zhucefrombyid").serialize(),
+                     success:function(msg){
+                         if(msg==1){
+                             location.href="<%=request.getContextPath()%>/shop/login.jsp"
+                         }
+                     },
+                     error:function(){
+
+                     }
+
+                 })
+             }
+         }else{
+             var st="<font colro='red'>用户名不能为空</font>";
+             $("#zhuceusername").html(st);
+         }
+
+    });
+    
+    function passwordyanz() {
+        var password=$("input[name=password]").val();
+        if(password!=""&&password!=null){
+            $("#zhucepassword").html("");
+            return true;
+        }else{
+            var st="<font colro='red'>请输入密码不能为空</font>";
+            $("#zhucepassword").html(st);
+            return false;
+        }
+    }
+
+    function passwordyanz2() {
+        var password2=$("input[name=password2]").val();
+        var password=$("input[name=password]").val();
+        if(password2!=""&&password2!=null){
+            if(password==password2){
+                $("#zhucepassword2").html("");
+                return true;
+            }
+            var st="<font colro='red'>两次密码不一致</font>";
+            $("#zhucepassword2").html(st);
+            return false;
+        }else{
+            var st="<font colro='red'>请输入密码不能为空</font>";
+            $("#zhucepassword2").html(st);
+            return false;
+        }
+    }
+</script>
 </body>
 </html>

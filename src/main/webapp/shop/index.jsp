@@ -6,14 +6,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>dangdang-换一种方式购物</title>
-    <link rel="shortcut icon" type="image/x-icon" href="img/icon/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="css/base.css">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/shop/img/icon/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/shop/css/base.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/shop/css/home.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/shop/css/style.css">
+    <script type="text/javascript" src="<%=request.getContextPath()%>/shop/js/jquery.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/shop/js/index.js"></script>
     <script type="text/javascript">
 
         var intDiff = parseInt(90000);//倒计时总秒数量
@@ -71,16 +73,150 @@
 
     </script>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+    }
+    ul{
+        list-style: none;
+    }
+
+    #container{
+        position: relative;
+        width: 850px;
+        height: 500px;
+        overflow: hidden;/*隐藏溢出的图片*/
+    }
+    .pic{
+        width:3200px;/*4张图的宽度*/
+        position: absolute;/*基于父容器进行定位*/
+        left:0;
+        animation-name: focusmap;
+        animation-duration: 12s;
+        animation-iteration-count: infinite;//动画调用可以简写
+
+    }
+    @keyframes focusmap {
+        0%,30%{
+            left: 0;
+        }
+        35%,65%{
+            left: -850px;
+        }
+        70%,99%{
+            left: -1700px;
+        }
+        100%{
+            left: -2500px;
+        }
+
+    }
+    .pic li{
+        float: left;
+        background: #5dd94e;
+    }
+
+    .pic li img {
+        width: 850px;
+        height: 500px;
+    }
+</style>
+<style type="text/css">
+    .btns{font-weight: bold;display: inline-block;width: 80px;height: 27px;border: #5fb878;background: #b89e5a;font-size: 1.4em;text-align: center;padding-top: 5px;color: white;}
+    a:hover{color:#FFFFFF}
+</style>
 <body>
+
+<%--  悬浮div 回到顶部 --%>
+<div class="suspension">
+    <div class="suspension-box">
+        <a href="#" class="a a-service "><i class="i"></i></a>
+        <a href="javascript:;" class="a a-service-phone "><i class="i"></i></a>
+        <a href="javascript:;" class="a a-qrcode"><i class="i"></i></a>
+        <a href="#" class="a a-cart"><i class="i"></i></a>
+        <a href="javascript:;" class="a a-top"><i class="i"></i></a>
+        <div class="d d-service">
+            <i class="arrow"></i>
+            <div class="inner-box">
+                <div class="d-service-item clearfix">
+                    <a href="#" class="clearfix"><span class="circle"><i class="i-qq"></i></span><h3>咨询在线客服</h3></a>
+                </div>
+            </div>
+        </div>
+        <div class="d d-service-phone">
+            <i class="arrow"></i>
+            <div class="inner-box">
+                <div class="d-service-item clearfix">
+                    <span class="circle"><i class="i-tel"></i></span>
+                    <div class="text">
+                        <p>服务热线</p>
+                        <p class="red number">4001-021-758</p>
+                    </div>
+                </div>
+                <div class="d-service-intro clearfix">
+                    <p><i></i>功能和特性</p>
+                    <p><i></i>价格和优惠</p>
+                    <p><i></i>获取内部资料</p>
+                </div>
+            </div>
+        </div>
+        <div class="d d-qrcode">
+            <i class="arrow"></i>
+            <div class="inner-box">
+                <div class="qrcode-img"><img src="images/side_ewm.jpg" alt=""></div>
+                <p>微信服务号</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        /* ----- 侧边悬浮 ---- */
+        $(document).on("mouseenter", ".suspension .a", function(){
+            var _this = $(this);
+            var s = $(".suspension");
+            var isService = _this.hasClass("a-service");
+            var isServicePhone = _this.hasClass("a-service-phone");
+            var isQrcode = _this.hasClass("a-qrcode");
+            if(isService){ s.find(".d-service").show().siblings(".d").hide();}
+            if(isServicePhone){ s.find(".d-service-phone").show().siblings(".d").hide();}
+            if(isQrcode){ s.find(".d-qrcode").show().siblings(".d").hide();}
+        });
+        $(document).on("mouseleave", ".suspension, .suspension .a-top", function(){
+            $(".suspension").find(".d").hide();
+        });
+        $(document).on("mouseenter", ".suspension .a-top", function(){
+            $(".suspension").find(".d").hide();
+        });
+        $(document).on("click", ".suspension .a-top", function(){
+            $("html,body").animate({scrollTop: 0});
+        });
+        $(window).scroll(function(){
+            var st = $(document).scrollTop();
+            var $top = $(".suspension .a-top");
+            if(st > 400){
+                $top.css({display: 'block'});
+            }else{
+                if ($top.is(":visible")) {
+                    $top.hide();
+                }
+            }
+        });
+    });
+</script>
 
 <header id="pc-header">
     <div class="pc-header-nav">
         <div class="pc-header-con">
-            <div class="fl pc-header-link" >您好！，欢迎来到dangdang购物 <a href="login.jsp" target="_blank">请登录</a> <a href="register.jsp" target="_blank"> 免费注册</a></div>
-            <div class="fr pc-header-list top-nav">
+            <c:if test="${hyuanuser==null}" ><div class="fl pc-header-link" >您好！，欢迎来到dangdang购物 <a href="/shop/login.jsp" target="_blank">请登录</a> <a href="/shop/register.jsp" target="_blank"> 免费注册</a></div></c:if>
+             <c:if test="${hyuanuser!=null}" >
+                 <div class="fr pc-header-list top-nav">
                 <ul>
                     <li>
-                        <div class="nav"><i class="pc-top-icon"></i><a href="#">我的订单</a></div>
+                        <div class="nav"><i class="pc-top-icon"></i><a href="<%=request.getContextPath()%>/lxlCon/queryOrder.do">${hyuanuser.name}的订单</a></div>
                         <div class="con">
                             <dl>
                                 <dt><a href="">批发进货</a></dt>
@@ -91,7 +227,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="nav"><i class="pc-top-icon"></i><a href="#">我的商城</a></div>
+                        <div class="nav"><i class="pc-top-icon"></i><a href="#">${hyuanuser.name}的商城</a></div>
                         <div class="con">
                             <dl>
                                 <dt><a href="">批发进货</a></dt>
@@ -101,13 +237,14 @@
                             </dl>
                         </div>
                     </li>
-                    <li><a href="#">我的dangdang</a></li>
-                    <li><a href="#">我的收藏</a></li>
+                    <li><a href="#">${hyuanuser.name}的dangdang</a></li>
+                    <li><a href="/shop/my-shoucang.jsp">${hyuanuser.name}的收藏</a></li>
                     <li><a href="#">会员中心</a></li>
                     <li><a href="#">客户服务</a></li>
                     <li><a href="#">帮助中心</a></li>
                 </ul>
-            </div>
+             </div>
+             </c:if>
         </div>
     </div>
     <div class="pc-header-logo clearfix">
@@ -145,66 +282,59 @@
         <div class="yNavIndex">
             <div class="pullDown">
                 <h2 class="pullDownTitle"><i class="icon-class"></i>所有商品分类</h2>
+                <%--<c:forEach items="${p}" var="s">--%>
                 <ul class="pullDownList">
                     <li class="">
                         <i class="list-icon-1"></i>
-                        <a href="" target="_blank">手机</a>
-                        /<a href="" target="_blank">数码</a>
-                        /<a href="" target="_blank">电脑办公</a>
+                        <a href="" target="_blank">${p[0].text}</a>
+                        <%--/<a href="" target="_blank">数码</a>
+                        /<a href="" target="_blank">电脑办公</a>--%>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">女装</a>
-                        /<a href="" target="_blank">内衣</a>
+                        <a href="" target="_blank">${p[1].text}</a>
+                       <%-- /<a href="" target="_blank">内衣</a>--%>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">男装</a>
-                        /<a href="" target="_blank">运动户外</a>
+                        <a href="" target="_blank">${p[2].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">女鞋</a>
-                        /<a href="" target="_blank">男鞋</a>
-                        /<a href="" target="_blank">箱包</a>
+                        <a href="" target="_blank">${p[3].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">化妆品</a>
-                        /<a href="" target="_blank">个人护理</a>
+                        <a href="" target="_blank">${p[4].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">母婴玩具</a>
+                        <a href="" target="_blank">${p[5].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">零食</a>
-                        /<a href="" target="_blank">进口食品</a>
-                        /<a href="" target="_blank">酒</a>
+                        <a href="" target="_blank">${p[6].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">大家电</a>
-                        /<a href="" target="_blank">生活电器</a>
+                        <a href="" target="_blank">${p[7].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">家具建材</a>
+                        <a href="" target="_blank">${p[8].text}</a>
                         <span></span>
                     </li>
                     <li>
                         <i class="list-icon-2"></i>
-                        <a href="" target="_blank">珠宝饰品</a>
-                        /<a href="" target="_blank">腕表眼镜</a>
+                        <a href="" target="_blank">${p[9].text}</a>
                         <span></span>
                     </li>
                     <li>
@@ -239,70 +369,17 @@
                         <span></span>
                     </li>
                 </ul>
+                <%--</c:forEach>--%>
                 <!-- 下拉详细列表具体分类 -->
                 <div class="yMenuListCon">
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">时尚女装</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
-                                <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                            </p>
-                        </div>
-                        <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
-                            <p>
-                                <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                            </p>
-                        </div>
-                        <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
-                            <p>
-                                <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <%--<a href="" class="ecolor610">大牌上新</a>--%>
+                                <c:forEach items="${a}" var="s">
+                                        <a href="javaScript:click${s.id}()">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
@@ -312,213 +389,104 @@
                             <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${b}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">精致内衣</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
-                                <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${c}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">服饰配件</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${d}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">时尚女鞋</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${e}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">流行男鞋</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${f}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">潮流女包</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${g}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">精品男包</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${h}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">童装童鞋</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${i}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
 
                     <div class="yMenuListConin">
                         <div class="yMenuLCinList">
-                            <h3><a href="" class="yListName">精品男装</a><a href="" class="yListMore">更多 ></a></h3>
+                            <h3><a href="" class="yListName">时尚饰品</a><a href="" class="yListMore">更多 ></a></h3>
                             <p>
                                 <a href="" class="ecolor610">大牌上新</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
-                                <a href="">商场同款</a>
-                                <a href="">男装集结</a>
-                                <a href="">羽绒服</a>
-                                <a href="">加厚羽绒 </a>
-                                <a href="">高帮鞋</a>
+                                <c:forEach items="${j}" var="s">
+                                    <a href="">${s.text}</a>
+                                </c:forEach>
                             </p>
                         </div>
                     </div>
@@ -664,30 +632,54 @@
     <div class="yBanner">
         <div class="yBannerList">
             <div class="yBannerListIn">
-                <a href=""><img class="ymainBanner" src="images/banner1.jpg"  width="100%"></a>
+                <%--<a href=""><img class="ymainBanner" src="images/banner1.jpg"  width="100%"></a>--%>
+                    <div id="container">
+                        <ul class="pic">
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img1.jpg" alt="pic1"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img2.jpg" alt="pic2"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img3.jpg" alt="pic3"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img4.jpg" alt="pic1"></a></li><!-- 克隆第一张 -->
+                        </ul>
+                    </div>
                 <div class="yBannerListInRight">
-                    <a href=""><img src="images/BR2.png" width="100%"/></a>
-                    <a href=""><img src="images/BR3.png" width="100%" /></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR2.png" width="100%"/></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR3.png" width="100%"/></a>
                 </div>
             </div>
         </div>
 
         <div class="yBannerList ybannerHide">
             <div class="yBannerListIn">
-                <a href=""><img class="ymainBanner" src="images/banner1.jpg" width="100%"></a>
+               <%-- <a href=""><img class="ymainBanner" src="images/banner1.jpg" width="100%"></a>--%>
+                   <div id="container">
+                       <ul class="pic">
+                           <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img1.jpg" alt="pic1"></a></li>
+                           <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img2.jpg" alt="pic2"></a></li>
+                           <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img3.jpg" alt="pic3"></a></li>
+                           <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img4.jpg" alt="pic1"></a></li><!-- 克隆第一张 -->
+                       </ul>
+                   </div>
                 <div class="yBannerListInRight">
-                    <a href=""><img src="images/BR6.png" width="100%"/></a>
-                    <a href=""><img src="images/BR4.png" width="100%" /></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR6.png" width="100%"/></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR4.png" width="100%" /></a>
                 </div>
             </div>
         </div>
 
         <div class="yBannerList ybannerHide">
             <div class="yBannerListIn">
-                <a href=""><img class="ymainBanner" src="images/banner1.jpg" width="100%"></a>
+                <%--<a href=""><img class="ymainBanner" src="images/banner1.jpg" width="100%"></a>--%>
+                    <div id="container">
+                        <ul class="pic">
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img1.jpg" alt="pic1"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img2.jpg" alt="pic2"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img3.jpg" alt="pic3"></a></li>
+                            <li><a href="javascript:;"><img src="<%=request.getContextPath()%>/shop/images/cont/slider_img4.jpg" alt="pic1"></a></li><!-- 克隆第一张 -->
+                        </ul>
+                    </div>
                 <div class="yBannerListInRight">
-                    <a href=""><img src="images/BR7.png" width="100%"/></a>
-                    <a href=""><img src="images/BR5.png" width="100%" /></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR7.png" width="100%"/></a>
+                    <a href=""><img src="<%=request.getContextPath()%>/shop/images/BR5.png" width="100%" /></a>
                 </div>
             </div>
         </div>
@@ -696,11 +688,11 @@
 </header>
 <section id="">
     <div class="center pc-ad-img clearfix">
-        <div style="height:180px" class="pc-center-img"><img src="img/ad/ad1.jpg"></div>
-        <div style="height:180px" class="pc-center-img"><img src="img/ad/ad2.jpg"></div>
-        <div style="height:180px" class="pc-center-img"><img src="img/ad/ad3.jpg"></div>
-        <div style="height:180px" class="pc-center-img"><img src="img/ad/ad4.jpg"></div>
-        <div style="height:180px" class="pc-center-img"><img src="img/ad/ad5.jpg"></div>
+        <div style="height:180px" class="pc-center-img"><img src="<%=request.getContextPath()%>/shop/img/ad/ad1.jpg"></div>
+        <div style="height:180px" class="pc-center-img"><img src="<%=request.getContextPath()%>/shop/img/ad/ad2.jpg"></div>
+        <div style="height:180px" class="pc-center-img"><img src="<%=request.getContextPath()%>/shop/img/ad/ad3.jpg"></div>
+        <div style="height:180px" class="pc-center-img"><img src="<%=request.getContextPath()%>/shop/img/ad/ad4.jpg"></div>
+        <div style="height:180px" class="pc-center-img"><img src="<%=request.getContextPath()%>/shop/img/ad/ad5.jpg"></div>
     </div>
 </section>
 <section id="s">
@@ -728,7 +720,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="page.jsp" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg1.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg1.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -750,7 +742,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg2.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg2.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -775,7 +767,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg3.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg3.jpg" alt="">
                                                             <div class="finish overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -797,7 +789,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg4.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg4.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -822,7 +814,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg5.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg5.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -847,7 +839,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg6.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg6.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -874,7 +866,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg7.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg7.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -895,7 +887,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg8.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg8.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -920,7 +912,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg9.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg9.jpg" alt="">
                                                             <div class="finish overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -942,7 +934,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg10.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg10.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -967,7 +959,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg11.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg11.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -992,7 +984,7 @@
                                                 <div class="xsq_deal_wrapper">
                                                     <a class="saleDeal" href="" target="_blank">
                                                         <div class="dealCon">
-                                                            <img class="dealImg" src="images/xlqg12.jpg" alt="">
+                                                            <img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg12.jpg" alt="">
                                                             <div class="zt2Qrcode overlay">
                                                                 <div class="xsqMask"></div>
                                                                 <p class="word1">15:00开抢</p>
@@ -1042,32 +1034,32 @@
             <div class="pc-list-goods">
                 <div class="xsq_deal_wrapper pc-deal-list clearfix">
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg13.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg13.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
                         <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
                     </a>
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg14.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
                         <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
                     </a>
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg15.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
                         <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
                     </a>
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg16.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
                         <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
                     </a>
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg17.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
                         <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
                     </a>
                     <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
+                        <div class="dealCon"><img class="dealImg" src="<%=request.getContextPath()%>/shop/images/xlqg18.jpg" alt=""></div>
                         <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
                         <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
                     </a>
@@ -1075,230 +1067,7 @@
             </div>
         </div>
     </div>
-    <div class="center pc-top-20">
-        <div class="pc-center-he">
-            <div class="pc-box-he pc-box-ge clearfix">
-                <div class="fl"><i class="pc-time-icon"></i></div>
-                <div class="fr pc-box-blue-link">
-                    <a href="#">上衣</a>
-                    <a href="#">短裙</a>
-                    <a href="#">牛仔裤</a>
-                    <a href="#">短袖</a>
-                    <a href="#">帽子</a>
-                </div>
-            </div>
-            <div class="pc-list-goods">
-                <div class="xsq_deal_wrapper pc-deal-list clearfix">
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg13.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
-                        <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="center pc-top-20">
-        <div class="pc-center-he">
-            <div class="pc-box-he pc-box-re clearfix">
-                <div class="fl"><i class="pc-time-icon"></i></div>
-                <div class="fr pc-box-blue-link">
-                    <a href="#">上衣</a>
-                    <a href="#">短裙</a>
-                    <a href="#">牛仔裤</a>
-                    <a href="#">短袖</a>
-                    <a href="#">帽子</a>
-                </div>
-            </div>
-            <div class="pc-list-goods">
-                <div class="xsq_deal_wrapper pc-deal-list clearfix">
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg13.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
-                        <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="center pc-top-20">
-        <div class="pc-center-he">
-            <div class="pc-box-he pc-box-qr clearfix">
-                <div class="fl"><i class="pc-time-icon"></i></div>
-                <div class="fr pc-box-blue-link">
-                    <a href="#">上衣</a>
-                    <a href="#">短裙</a>
-                    <a href="#">牛仔裤</a>
-                    <a href="#">短袖</a>
-                    <a href="#">帽子</a>
-                </div>
-            </div>
-            <div class="pc-list-goods">
-                <div class="xsq_deal_wrapper pc-deal-list clearfix">
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg13.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
-                        <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="center pc-top-20">
-        <div class="pc-center-he">
-            <div class="pc-box-he pc-box-ue clearfix">
-                <div class="fl"><i class="pc-time-icon"></i></div>
-                <div class="fr pc-box-blue-link">
-                    <a href="#">上衣</a>
-                    <a href="#">短裙</a>
-                    <a href="#">牛仔裤</a>
-                    <a href="#">短袖</a>
-                    <a href="#">帽子</a>
-                </div>
-            </div>
-            <div class="pc-list-goods" style="height:auto">
-                <div class="xsq_deal_wrapper pc-deal-list clearfix">
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg19.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
-                        <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
-                    </a>
-                </div>
-                <div class="xsq_deal_wrapper pc-deal-list clearfix" >
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg13.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>39.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg14.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池"><span class="baoyouText">[包邮]</span>神火（supfire）C8T6 强光手电筒 远射LED充电式防身灯 配18650电池</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg15.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品"><span class="baoyouText">[包邮]</span>【京东超市】福临门 葵花籽原香食用调和油5L 中粮出品</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>99.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg16.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="暖风机家用取暖器婴儿电暖气暖手宝浴室防水N"><span class="baoyouText">[包邮]</span>暖风机家用取暖器婴儿电暖气暖手宝浴室防水N</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>199.9</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg17.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具"><span class="baoyouText">[包邮]</span>CIKOO 洗澡玩具 戏水玩具 水枪玩具 高压水枪玩具</p></div>
-                        <div class="dealInfo"><span class="price">¥<em>29.0</em></span></div>
-                    </a>
-                    <a class="saleDeal" href="" target="_blank">
-                        <div class="dealCon"><img class="dealImg" src="images/xlqg18.jpg" alt=""></div>
-                        <div class="title_new"><p class="word" title="联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 "><span class="baoyouText">[包邮]</span>联想（ThinkPad）轻薄系列E470c（20H3A004CD）14英寸笔记本电脑（i5-6200U 8G 500G 2G独显 Win10）黑色 </p></div>
-                        <div class="dealInfo"><span class="price">¥<em>4499.9</em></span></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </section>
 
 <div style="height:100px"></div>
@@ -1342,7 +1111,7 @@
                 <li class="lss">
                     <span>下载手机版</span>
                     <div class="clearfix lss-pa">
-                        <div class="fl lss-img"><img src="img/icon/code.png" alt=""></div>
+                        <div class="fl lss-img"><img src="<%=request.getContextPath()%>/shop/img/icon/code.png" alt=""></div>
                         <div class="fl" style="padding-left:20px">
                             <h4>扫描下载云购APP</h4>
                             <p>把优惠握在手心</p>
@@ -1376,7 +1145,43 @@
         </div>
     </div>
 </footer>
-<script type="text/javascript">
+<script>
+
+    function click79(){
+        alert(19)
+    }
+    function click11(){
+        alert(11)
+    }
+    function click12(){
+        alert(12)
+    }
+    function click13(){
+        alert(13)
+    }
+    function click14(){
+        alert(14)
+    }
+    function click15(){
+        alert(15)
+    }
+    function click16(){
+        alert(16)
+    }
+    function click17(){
+        alert(17)
+    }
+    function click18(){
+        alert(18)
+    }
+    function click19(){
+        alert(19)
+    }
+    function click20(){
+        alert(20)
+    }
+
+
     //hover 触发两个事件，鼠标移上去和移走
     //mousehover 只触发移上去事件
     $(".top-nav ul li").hover(function(){
@@ -1391,5 +1196,6 @@
         $(this).find(".nav a").removeClass("hover");
     })
 </script>
+
 </body>
 </html>
